@@ -3,6 +3,8 @@ const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer');
+const cors = require('cors');
+
 
 const feedRoutes = require('./routes/feed');
 const authRoutes = require('./routes/auth');
@@ -39,6 +41,19 @@ const fileFilter = (req, file, cb) => {
 app.use(express.json()); //application/json
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
 app.use('/images', express.static(path.join(__dirname, 'images')));
+
+// const whitelist = ['http://localhost:3000', 'http://localhost:3001', 'https://clientasm3.netlify.app', 'https://adminasm3.netlify.app'];
+// app.use(cors({
+//     origin: function (origin, callback) {
+//         if (whitelist.indexOf(origin) !== -1) {
+//             callback(null, true);
+//         } else {
+//             callback(new Error('Not allowed by CORS'));
+//         }
+//     },
+//     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+//     credentials: true
+// }));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
